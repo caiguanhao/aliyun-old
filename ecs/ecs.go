@@ -20,8 +20,8 @@ import (
 )
 
 type ECS struct {
-	KEY    string
-	SECRET string
+	KEY    []string
+	SECRET []string
 }
 
 type ECSInterface interface {
@@ -29,8 +29,9 @@ type ECSInterface interface {
 	PrintTable()
 }
 
-func sign(secret, query string) string {
-	mac := hmac.New(sha1.New, []byte(secret+"&"))
+func sign(secret []string, query string) string {
+	secret = append(secret, "&")
+	mac := hmac.New(sha1.New, []byte(strings.Join(secret, "")))
 	mac.Write([]byte("GET&%2F&" + query))
 	return base64.StdEncoding.EncodeToString(mac.Sum(nil))
 }
@@ -68,7 +69,7 @@ func (ecs *ECS) Request(queries map[string]string, target interface{}) error {
 	params := map[string]string{
 		"Format":           "JSON",
 		"Version":          "2014-05-26",
-		"AccessKeyId":      ecs.KEY,
+		"AccessKeyId":      strings.Join(ecs.KEY, ""),
 		"SignatureMethod":  "HMAC-SHA1",
 		"SignatureVersion": "1.0",
 		"SignatureNonce":   randomString(64),

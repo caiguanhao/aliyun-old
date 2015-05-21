@@ -5,13 +5,12 @@ import (
 	"fmt"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/caiguanhao/aliyun/ecs"
 	"github.com/caiguanhao/aliyun/misc/opts"
 )
 
-var KEY string
-var SECRET string
 var ACTIONS = [][]string{
 	{"list-instances", "list", "List all instances, show one if ID is specified"},
 	{"list-images", "images", "List all images"},
@@ -57,7 +56,7 @@ func init() {
 		const format = "%-20s  %-8s  %s\n"
 		fmt.Printf("Usage: %s [OPTION] [ACTION] [TARGET]\n", path.Base(os.Args[0]))
 		fmt.Println()
-		fmt.Printf("Using Access Key %s\n", KEY)
+		fmt.Printf("Using Access Key %s\n", strings.Join(KEY, ""))
 		fmt.Println()
 		fmt.Printf(format, "Action", "Alias", "Description")
 		for _, action := range ACTIONS {
