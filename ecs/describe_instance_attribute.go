@@ -38,7 +38,9 @@ type DescribeInstanceAttribute struct {
 	InternetMaxBandwidthIn  int64                              `json:"InternetMaxBandwidthIn"`
 	InternetMaxBandwidthOut int64                              `json:"InternetMaxBandwidthOut"`
 	OperationLocks          struct {
-		LockReason []string `json:"LockReason"`
+		LockReason []struct {
+			LockReason string `json:"LockReason"`
+		} `json:"LockReason"`
 	} `json:"OperationLocks"`
 	PublicIpAddress  DescribeInstanceAttributeIPAddress `json:"PublicIpAddress"`
 	RegionId         string                             `json:"RegionId"`
