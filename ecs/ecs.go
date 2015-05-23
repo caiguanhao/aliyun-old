@@ -159,6 +159,8 @@ func (ecs *ECS) Do(task string, target *ECSInterface) bool {
 		}
 	case "images", "list-images":
 		*target, err = DescribeImages{}.Do(ecs)
+	case "regions", "list-regions":
+		*target, err = DescribeRegions{}.Do(ecs)
 	case "types", "list-instance-types":
 		*target, err = DescribeInstanceTypes{}.Do(ecs)
 	case "groups", "list-security-groups":

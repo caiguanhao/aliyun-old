@@ -14,6 +14,7 @@ import (
 var ACTIONS = [][]string{
 	{"list-instances", "list", "List all instances, show one if ID is specified"},
 	{"list-images", "images", "List all images"},
+	{"list-regions", "regions", "List all regions"},
 	{"list-instance-types", "types", "List all instance types"},
 	{"list-security-groups", "groups", "List all security groups"},
 	{"create-instance", "create", "Create an instance"},

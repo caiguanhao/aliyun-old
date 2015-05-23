@@ -49,6 +49,7 @@ func (images DescribeImages) Do(ecs *ECS) (*DescribeImages, error) {
 }
 
 func (images DescribeImages) Print() {
+	sort.Sort(byImagesId(images.Images.Image))
 	for _, image := range images.Images.Image {
 		fmt.Println(image.ImageId)
 	}
