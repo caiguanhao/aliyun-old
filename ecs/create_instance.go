@@ -1,10 +1,10 @@
 package ecs
 
 import (
-	"errors"
 	"fmt"
 	"os"
 
+	"github.com/caiguanhao/aliyun/misc/errors"
 	"github.com/caiguanhao/aliyun/misc/opts"
 )
 
@@ -13,25 +13,34 @@ type CreateInstance struct {
 	RequestId  string `json:"RequestId"`
 }
 
-func (create CreateInstance) Do(ecs *ECS) (*CreateInstance, error) {
-	password := os.Getenv("PASSWORD")
+var password = os.Getenv("PASSWORD")
+
+func validate() errors.Errors {
+	var errs errors.Errors
 	if len(password) < 1 {
-		return nil, errors.New("Please provide a password via environment variable PASSWORD.")
+		errs.Add("Please provide a password via environment variable PASSWORD.")
 	}
 	if len(opts.InstanceImage) < 1 {
-		return nil, errors.New("Please provide a --image.")
+		errs.Add("Please provide a --image.")
 	}
 	if len(opts.InstanceType) < 1 {
-		return nil, errors.New("Please provide a --type.")
+		errs.Add("Please provide a --type.")
 	}
 	if len(opts.InstanceGroup) < 1 {
-		return nil, errors.New("Please provide a --group.")
+		errs.Add("Please provide a --group.")
 	}
 	if len(opts.InstanceName) < 1 {
-		return nil, errors.New("Please provide a --name.")
+		errs.Add("Please provide a --name.")
 	}
 	if len(opts.Region) < 1 {
-		return nil, errors.New("Please provide a --region.")
+		errs.Add("Please provide a --region.")
+	}
+	return errs
+}
+
+func (create CreateInstance) Do(ecs *ECS) (*CreateInstance, error) {
+	if errs := validate(); errs.HaveError() {
+		return nil, errs.Errorify()
 	}
 	return &create, ecs.Request(map[string]string{
 		"Action":                        "CreateInstance",
