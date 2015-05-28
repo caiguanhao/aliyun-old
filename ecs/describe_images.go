@@ -1,7 +1,12 @@
 package ecs
 
-import "fmt"
-import "sort"
+import (
+	"errors"
+	"fmt"
+	"sort"
+
+	"github.com/caiguanhao/aliyun/misc/opts"
+)
 
 type ECSImage struct {
 	Architecture       string `json:"Architecture"`
@@ -42,9 +47,15 @@ func (a byImagesId) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a byImagesId) Less(i, j int) bool { return a[i].ImageId < a[j].ImageId }
 
 func (images DescribeImages) Do(ecs *ECS) (*DescribeImages, error) {
+	if len(opts.Region) < 1 {
+		if opts.IsQuiet {
+			return &images, nil
+		}
+		return nil, errors.New("Please provide a --region.")
+	}
 	return &images, ecs.Request(map[string]string{
 		"Action":   "DescribeImages",
-		"RegionId": "cn-hangzhou",
+		"RegionId": opts.Region,
 	}, &images)
 }
 

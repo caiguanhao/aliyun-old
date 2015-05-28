@@ -30,6 +30,7 @@ func init() {
 	flag.BoolVar(&opts.IsQuiet, "quiet", false, "")
 	flag.BoolVar(&opts.IsVerbose, "v", false, "")
 	flag.BoolVar(&opts.IsVerbose, "verbose", false, "")
+	flag.BoolVar(&opts.PrintName, "print-name", false, "")
 	flag.StringVar(&opts.InstanceName, "name", "", "")
 	flag.StringVar(&opts.InstanceImage, "image", "", "")
 	flag.StringVar(&opts.InstanceType, "type", "", "")
@@ -43,15 +44,17 @@ func init() {
 			for _, action := range ACTIONS {
 				fmt.Println(action[0])
 			}
-			flag.VisitAll(func(flag *flag.Flag) {
-				fmt.Print("-")
-				if len(flag.Name) > 1 {
+			if opts.IsVerbose {
+				flag.VisitAll(func(flag *flag.Flag) {
 					fmt.Print("-")
-				}
-				fmt.Println(flag.Name)
-			})
-			fmt.Println("-h")
-			fmt.Println("--help")
+					if len(flag.Name) > 1 {
+						fmt.Print("-")
+					}
+					fmt.Println(flag.Name)
+				})
+				fmt.Println("-h")
+				fmt.Println("--help")
+			}
 			return
 		}
 		const format = "%-20s  %-8s  %s\n"

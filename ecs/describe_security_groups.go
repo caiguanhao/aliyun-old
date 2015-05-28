@@ -1,6 +1,11 @@
 package ecs
 
-import "fmt"
+import (
+	"errors"
+	"fmt"
+
+	"github.com/caiguanhao/aliyun/misc/opts"
+)
 
 type DescribeSecurityGroups struct {
 	PageNumber     int64  `json:"PageNumber"`
@@ -17,9 +22,15 @@ type DescribeSecurityGroups struct {
 }
 
 func (groups DescribeSecurityGroups) Do(ecs *ECS) (*DescribeSecurityGroups, error) {
+	if len(opts.Region) < 1 {
+		if opts.IsQuiet {
+			return &groups, nil
+		}
+		return nil, errors.New("Please provide a --region.")
+	}
 	return &groups, ecs.Request(map[string]string{
 		"Action":   "DescribeSecurityGroups",
-		"RegionId": "cn-hangzhou",
+		"RegionId": opts.Region,
 	}, &groups)
 }
 

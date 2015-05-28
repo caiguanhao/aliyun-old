@@ -19,15 +19,15 @@ function str_to_array {
 }
 
 function update_access_key {
-  str_to_array KEY
-  str_to_array SECRET
+  str_to_array ALIYUN_ACCESS_KEY
+  str_to_array ALIYUN_ACCESS_SECRET
   awk "
   /KEY/ {
-    print \"var KEY = []string{${KEY}}\"
+    print \"var KEY = []string{${ALIYUN_ACCESS_KEY}}\"
     next
   }
   /SECRET/ {
-    print \"var SECRET = []string{${SECRET}}\"
+    print \"var SECRET = []string{${ALIYUN_ACCESS_SECRET}}\"
     next
   }
   {
@@ -38,16 +38,20 @@ function update_access_key {
   mv _access_key.go access_key.go
 }
 
-echo -n "Please paste your access key ID: (will not be echoed) "
-read -s KEY
-echo
-echo -n "Please paste your access key SECRET: (will not be echoed) "
-read -s SECRET
-echo
+if test -z "$ALIYUN_ACCESS_KEY"; then
+  echo -n "Please paste your access key ID: (will not be echoed) "
+  read -s ALIYUN_ACCESS_KEY
+  echo
+fi
+if test -z "$ALIYUN_ACCESS_SECRET"; then
+  echo -n "Please paste your access key SECRET: (will not be echoed) "
+  read -s ALIYUN_ACCESS_SECRET
+  echo
+fi
 update_access_key
 
 go build
 
-KEY="key"
-SECRET="secret"
+ALIYUN_ACCESS_KEY="key"
+ALIYUN_ACCESS_SECRET="secret"
 update_access_key

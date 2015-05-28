@@ -16,10 +16,22 @@ type CreateInstance struct {
 func (create CreateInstance) Do(ecs *ECS) (*CreateInstance, error) {
 	password := os.Getenv("PASSWORD")
 	if len(password) < 1 {
-		return nil, errors.New("Please provide a password.")
+		return nil, errors.New("Please provide a password via environment variable PASSWORD.")
+	}
+	if len(opts.InstanceImage) < 1 {
+		return nil, errors.New("Please provide a --image.")
+	}
+	if len(opts.InstanceType) < 1 {
+		return nil, errors.New("Please provide a --type.")
+	}
+	if len(opts.InstanceGroup) < 1 {
+		return nil, errors.New("Please provide a --group.")
 	}
 	if len(opts.InstanceName) < 1 {
 		return nil, errors.New("Please provide a --name.")
+	}
+	if len(opts.Region) < 1 {
+		return nil, errors.New("Please provide a --region.")
 	}
 	return &create, ecs.Request(map[string]string{
 		"Action":                        "CreateInstance",

@@ -1,9 +1,12 @@
 package ecs
 
 import (
+	"errors"
 	"fmt"
 	"math"
 	"time"
+
+	"github.com/caiguanhao/aliyun/misc/opts"
 )
 
 type DescribeInstances struct {
@@ -17,15 +20,25 @@ type DescribeInstances struct {
 }
 
 func (instances DescribeInstances) Do(ecs *ECS) (*DescribeInstances, error) {
+	if len(opts.Region) < 1 {
+		if opts.IsQuiet {
+			return &instances, nil
+		}
+		return nil, errors.New("Please provide a --region.")
+	}
 	return &instances, ecs.Request(map[string]string{
 		"Action":   "DescribeInstances",
-		"RegionId": "cn-hangzhou",
+		"RegionId": opts.Region,
 	}, &instances)
 }
 
 func (instances DescribeInstances) Print() {
 	for _, instance := range instances.Instances.Instance {
-		fmt.Println(instance.InstanceId)
+		if opts.PrintName {
+			fmt.Println(instance.InstanceName)
+		} else {
+			fmt.Println(instance.InstanceId)
+		}
 	}
 }
 
