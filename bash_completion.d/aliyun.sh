@@ -6,6 +6,17 @@ complete -F __aliyun_main aliyun
 
 ALL=($(aliyun --verbose --quiet --help))
 
+InstanceActions=(
+  list     list-instances
+  allocate allocate-public-ip
+  start    start-instance
+  stop     stop-instance
+  restart  restart-instance
+  remove   remove-instance
+)
+InstanceActions=$(printf "|%s" "${InstanceActions[@]}")
+InstanceActions=${InstanceActions:1}
+
 function __aliyun_main {
   local region=""
   local i=0
@@ -28,17 +39,19 @@ function __aliyun_main {
     esac
   done
 
-  local prever=${COMP_WORDS[COMP_CWORD-2]}
-  case "$prever" in
-  list|list-instances)
-    COMPREPLY=()
-    return 0
-    ;;
-  esac
+  if test "$COMP_CWORD" -gt 2; then
+    local prever=${COMP_WORDS[COMP_CWORD-2]}
+    case "$prever" in
+    $InstanceActions)
+      COMPREPLY=()
+      return 0
+      ;;
+    esac
+  fi
 
   local prev=${COMP_WORDS[COMP_CWORD-1]}
   case "$prev" in
-  list|list-instances)
+  $InstanceActions)
     COMPREPLY=($(aliyun --quiet --region "$region" list-instances))
     ;;
   --name)
@@ -56,13 +69,10 @@ function __aliyun_main {
   --group)
     COMPREPLY=($(aliyun --quiet --region "$region" list-security-groups))
     ;;
-  images|regions|types|groups|create|allocate|start|stop|restart|remove)
+  images|regions|types|groups|create)
     COMPREPLY=()
     ;;
   list-images|list-regions|list-instance-types|list-security-groups|create-instance)
-    COMPREPLY=()
-    ;;
-  allocate-public-ip|start-instance|stop-instance|restart-instance|remove-instance)
     COMPREPLY=()
     ;;
   *)
