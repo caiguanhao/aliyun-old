@@ -47,7 +47,14 @@ func (types DescribeInstanceTypes) Print() {
 
 func (types DescribeInstanceTypes) PrintTable() {
 	sort.Sort(byCPUCoreThenMemorySize(types.InstanceTypes.InstanceType))
-	const format = "%-14s  %-8s  %-6s\n"
+	idMaxLength := 4
+	for _, itype := range types.InstanceTypes.InstanceType {
+		idLength := len(itype.InstanceTypeId)
+		if idLength > idMaxLength {
+			idMaxLength = idLength
+		}
+	}
+	format := fmt.Sprintf("%%-%ds  %%-8s  %%-6s\n", idMaxLength)
 	fmt.Printf(format, "Name", "CPU Core", "Memory")
 	for _, itype := range types.InstanceTypes.InstanceType {
 		fmt.Printf(
