@@ -68,7 +68,7 @@ func (instances DescribeInstances) PrintTable() {
 	)
 	fmt.Printf(format, "ID", "Name", "Status", "Public IP", "Private IP", "Type", "Created At")
 	for _, instance := range instances.Instances.Instance {
-		createdAt, _ := time.Parse(time.RFC3339, instance.CreationTime)
+		createdAt, _ := time.Parse("2006-01-02T15:04Z", instance.CreationTime)
 		duration := time.Since(createdAt)
 		createdAtStr := fmt.Sprintf("%s (%.0f days ago)",
 			createdAt.Local().Format("2006-01-02 15:04:05"),
