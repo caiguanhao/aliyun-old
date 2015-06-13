@@ -15,6 +15,17 @@ read -s ALIYUN_ACCESS_SECRET && export ALIYUN_ACCESS_SECRET
 make build
 ```
 
+Or in a Docker container:
+
+```
+read -s ALIYUN_ACCESS_KEY && export ALIYUN_ACCESS_KEY
+read -s ALIYUN_ACCESS_SECRET && export ALIYUN_ACCESS_SECRET
+docker run --rm \
+  -e ALIYUN_ACCESS_KEY -e ALIYUN_ACCESS_SECRET \
+  -v="$(pwd):/go/src/github.com/caiguanhao/aliyun" \
+  -w="/go/src/github.com/caiguanhao/aliyun" golang:1.4.2 make build
+```
+
 USAGE
 -----
 
