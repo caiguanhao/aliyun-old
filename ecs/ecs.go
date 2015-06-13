@@ -47,7 +47,7 @@ func randomString(n int) string {
 }
 
 func urlEncode(input string) string {
-	return url.QueryEscape(input)
+	return strings.Replace(url.QueryEscape(input), "+", "%20", -1)
 }
 
 func buildQueryString(input map[string]string) string {
@@ -177,6 +177,8 @@ func (ecs *ECS) Do(task string, target *ECSInterface) bool {
 		*target, err = RestartInstance{}.Do(ecs)
 	case "remove", "remove-instance":
 		*target, err = RemoveInstance{}.Do(ecs)
+	case "update", "update-instance":
+		*target, err = ModifyInstanceAttribute{}.Do(ecs)
 	default:
 		return false
 	}

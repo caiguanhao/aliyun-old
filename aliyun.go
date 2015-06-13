@@ -23,6 +23,7 @@ var ACTIONS = [][]string{
 	{"stop-instance", "stop", "Stop an instance"},
 	{"restart-instance", "restart", "Restart an instance"},
 	{"remove-instance", "remove", "Remove an instance"},
+	{"update-instance", "update", "Update attributes of an instance"},
 }
 
 func init() {
@@ -36,6 +37,7 @@ func init() {
 	flag.StringVar(&opts.InstanceType, "type", "", "")
 	flag.StringVar(&opts.InstanceGroup, "group", "", "")
 	flag.StringVar(&opts.Region, "region", "", "")
+	flag.StringVar(&opts.Description, "description", "\x00", "")
 	flag.Usage = func() {
 		if opts.IsQuiet {
 			for _, action := range ACTIONS {

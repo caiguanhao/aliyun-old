@@ -13,6 +13,7 @@ InstanceActions=(
   stop     stop-instance
   restart  restart-instance
   remove   remove-instance
+  update   update-instance
 )
 InstanceActions=$(printf "|%s" "${InstanceActions[@]}")
 InstanceActions=${InstanceActions:1}

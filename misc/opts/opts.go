@@ -10,4 +10,5 @@ var (
 	InstanceType  string
 	InstanceGroup string
 	Region        string
+	Description   string
 )

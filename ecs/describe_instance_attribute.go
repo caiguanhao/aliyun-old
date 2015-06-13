@@ -85,4 +85,5 @@ func (instance DescribeInstanceAttribute) PrintTable() {
 	fmt.Printf(format, "Public IP", instance.PublicIpAddress.GetIPAddress(0))
 	fmt.Printf(format, "Private IP", instance.InnerIpAddress.GetIPAddress(0))
 	fmt.Printf(format, "Created At", createdAtStr)
+	fmt.Printf(format, "Description", instance.Description)
 }
