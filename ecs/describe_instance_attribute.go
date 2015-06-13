@@ -1,10 +1,11 @@
 package ecs
 
 import (
-	"flag"
 	"fmt"
 	"math"
 	"time"
+
+	"github.com/caiguanhao/aliyun/misc/opts"
 )
 
 type DescribeInstanceAttributeIPAddress struct {
@@ -59,10 +60,14 @@ type DescribeInstanceAttribute struct {
 }
 
 func (instance DescribeInstanceAttribute) Do(ecs *ECS) (*DescribeInstanceAttribute, error) {
-	return &instance, ecs.Request(map[string]string{
-		"Action":     "DescribeInstanceAttribute",
-		"InstanceId": flag.Arg(1),
-	}, &instance)
+	if id, err := opts.GetInstanceId(); err == nil {
+		return &instance, ecs.Request(map[string]string{
+			"Action":     "DescribeInstanceAttribute",
+			"InstanceId": id,
+		}, &instance)
+	} else {
+		return nil, err
+	}
 }
 
 func (instance DescribeInstanceAttribute) Print() {

@@ -53,7 +53,7 @@ function __aliyun_main {
   local prev=${COMP_WORDS[COMP_CWORD-1]}
   case "$prev" in
   $InstanceActions)
-    COMPREPLY=($(aliyun --quiet --region "$region" list-instances))
+    COMPREPLY=($(aliyun --quiet --region "$region" --print-name-id list-instances))
     ;;
   --name)
     COMPREPLY=($(aliyun --quiet --region "$region" --print-name list-instances))

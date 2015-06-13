@@ -1,8 +1,9 @@
 package ecs
 
 import (
-	"flag"
 	"fmt"
+
+	"github.com/caiguanhao/aliyun/misc/opts"
 )
 
 type AllocatePublicIP struct {
@@ -11,10 +12,14 @@ type AllocatePublicIP struct {
 }
 
 func (alloc AllocatePublicIP) Do(ecs *ECS) (*AllocatePublicIP, error) {
-	return &alloc, ecs.Request(map[string]string{
-		"Action":     "AllocatePublicIpAddress",
-		"InstanceId": flag.Arg(1),
-	}, &alloc)
+	if id, err := opts.GetInstanceId(); err == nil {
+		return &alloc, ecs.Request(map[string]string{
+			"Action":     "AllocatePublicIpAddress",
+			"InstanceId": id,
+		}, &alloc)
+	} else {
+		return nil, err
+	}
 }
 
 func (alloc AllocatePublicIP) Print() {

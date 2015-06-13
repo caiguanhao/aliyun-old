@@ -32,6 +32,7 @@ func init() {
 	flag.BoolVar(&opts.IsVerbose, "v", false, "")
 	flag.BoolVar(&opts.IsVerbose, "verbose", false, "")
 	flag.BoolVar(&opts.PrintName, "print-name", false, "")
+	flag.BoolVar(&opts.PrintNameAndId, "print-name-id", false, "")
 	flag.StringVar(&opts.InstanceName, "name", "", "")
 	flag.StringVar(&opts.InstanceImage, "image", "", "")
 	flag.StringVar(&opts.InstanceType, "type", "", "")

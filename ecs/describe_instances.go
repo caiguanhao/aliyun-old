@@ -34,7 +34,9 @@ func (instances DescribeInstances) Do(ecs *ECS) (*DescribeInstances, error) {
 
 func (instances DescribeInstances) Print() {
 	for _, instance := range instances.Instances.Instance {
-		if opts.PrintName {
+		if opts.PrintNameAndId {
+			fmt.Printf("%s:%s\n", instance.InstanceName, instance.InstanceId)
+		} else if opts.PrintName {
 			fmt.Println(instance.InstanceName)
 		} else {
 			fmt.Println(instance.InstanceId)

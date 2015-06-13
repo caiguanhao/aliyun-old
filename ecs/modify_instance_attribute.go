@@ -2,7 +2,6 @@ package ecs
 
 import (
 	"errors"
-	"flag"
 	"fmt"
 
 	"github.com/caiguanhao/aliyun/misc/opts"
@@ -13,9 +12,13 @@ type ModifyInstanceAttribute struct {
 }
 
 func (modify ModifyInstanceAttribute) Do(ecs *ECS) (*ModifyInstanceAttribute, error) {
+	id, err := opts.GetInstanceId()
+	if err != nil {
+		return nil, err
+	}
 	params := map[string]string{
 		"Action":     "ModifyInstanceAttribute",
-		"InstanceId": flag.Arg(1),
+		"InstanceId": id,
 	}
 	if opts.Description != "\x00" {
 		params["Description"] = opts.Description

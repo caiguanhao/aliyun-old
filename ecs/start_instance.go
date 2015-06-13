@@ -1,8 +1,9 @@
 package ecs
 
 import (
-	"flag"
 	"fmt"
+
+	"github.com/caiguanhao/aliyun/misc/opts"
 )
 
 type StartInstance struct {
@@ -10,10 +11,14 @@ type StartInstance struct {
 }
 
 func (start StartInstance) Do(ecs *ECS) (*StartInstance, error) {
-	return &start, ecs.Request(map[string]string{
-		"Action":     "StartInstance",
-		"InstanceId": flag.Arg(1),
-	}, &start)
+	if id, err := opts.GetInstanceId(); err == nil {
+		return &start, ecs.Request(map[string]string{
+			"Action":     "StartInstance",
+			"InstanceId": id,
+		}, &start)
+	} else {
+		return nil, err
+	}
 }
 
 func (start StartInstance) Print() {

@@ -1,8 +1,9 @@
 package ecs
 
 import (
-	"flag"
 	"fmt"
+
+	"github.com/caiguanhao/aliyun/misc/opts"
 )
 
 type RestartInstance struct {
@@ -10,10 +11,14 @@ type RestartInstance struct {
 }
 
 func (restart RestartInstance) Do(ecs *ECS) (*RestartInstance, error) {
-	return &restart, ecs.Request(map[string]string{
-		"Action":     "RebootInstance",
-		"InstanceId": flag.Arg(1),
-	}, &restart)
+	if id, err := opts.GetInstanceId(); err == nil {
+		return &restart, ecs.Request(map[string]string{
+			"Action":     "RebootInstance",
+			"InstanceId": id,
+		}, &restart)
+	} else {
+		return nil, err
+	}
 }
 
 func (restart RestartInstance) Print() {

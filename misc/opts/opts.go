@@ -1,9 +1,16 @@
 package opts
 
+import (
+	"errors"
+	"flag"
+	"strings"
+)
+
 var (
-	IsQuiet   bool
-	IsVerbose bool
-	PrintName bool
+	IsQuiet        bool
+	IsVerbose      bool
+	PrintName      bool
+	PrintNameAndId bool
 
 	InstanceName  string
 	InstanceImage string
@@ -12,3 +19,14 @@ var (
 	Region        string
 	Description   string
 )
+
+func GetInstanceId() (string, error) {
+	id := flag.Arg(1)
+	if id == "" {
+		return "", errors.New("Please provide an instance ID.")
+	}
+	if strings.Contains(id, ":") {
+		id = id[strings.Index(id, ":")+1:]
+	}
+	return id, nil
+}

@@ -1,8 +1,9 @@
 package ecs
 
 import (
-	"flag"
 	"fmt"
+
+	"github.com/caiguanhao/aliyun/misc/opts"
 )
 
 type RemoveInstance struct {
@@ -10,10 +11,14 @@ type RemoveInstance struct {
 }
 
 func (remove RemoveInstance) Do(ecs *ECS) (*RemoveInstance, error) {
-	return &remove, ecs.Request(map[string]string{
-		"Action":     "DeleteInstance",
-		"InstanceId": flag.Arg(1),
-	}, &remove)
+	if id, err := opts.GetInstanceId(); err == nil {
+		return &remove, ecs.Request(map[string]string{
+			"Action":     "DeleteInstance",
+			"InstanceId": id,
+		}, &remove)
+	} else {
+		return nil, err
+	}
 }
 
 func (remove RemoveInstance) Print() {
