@@ -3,6 +3,7 @@ package ecs
 import (
 	"fmt"
 	"math"
+	"strings"
 	"time"
 
 	"github.com/caiguanhao/aliyun/misc/opts"
@@ -57,6 +58,26 @@ type DescribeInstanceAttribute struct {
 		VpcId            string                             `json:"VpcId"`
 	} `json:"VpcAttributes"`
 	ZoneId string `json:"ZoneId"`
+}
+
+func (instance DescribeInstanceAttribute) ShouldHide() bool {
+	if opts.ShowAll {
+		return false
+	} else {
+		isHidden := strings.Contains(instance.Description, "[HIDE]")
+		if opts.ShowOnlyHidden {
+			return !isHidden
+		} else {
+			return isHidden
+		}
+	}
+}
+
+func (instance *DescribeInstanceAttribute) DescribeInstanceAttributeById(ecs *ECS, id string) error {
+	return ecs.Request(map[string]string{
+		"Action":     "DescribeInstanceAttribute",
+		"InstanceId": id,
+	}, instance)
 }
 
 func (instance DescribeInstanceAttribute) Do(ecs *ECS) (*DescribeInstanceAttribute, error) {

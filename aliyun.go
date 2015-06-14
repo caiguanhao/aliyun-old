@@ -24,6 +24,8 @@ var ACTIONS = [][]string{
 	{"restart-instance", "restart", "Restart an instance"},
 	{"remove-instance", "remove", "Remove an instance"},
 	{"update-instance", "update", "Update attributes of an instance"},
+	{"hide-instance", "hide", "Hide instance from instance list"},
+	{"unhide-instance", "unhide", "Un-hide instance from instance list"},
 }
 
 func init() {
@@ -33,6 +35,8 @@ func init() {
 	flag.BoolVar(&opts.IsVerbose, "verbose", false, "")
 	flag.BoolVar(&opts.PrintName, "print-name", false, "")
 	flag.BoolVar(&opts.PrintNameAndId, "print-name-id", false, "")
+	flag.BoolVar(&opts.ShowOnlyHidden, "hidden-only", false, "")
+	flag.BoolVar(&opts.ShowAll, "all", false, "")
 	flag.StringVar(&opts.InstanceName, "name", "", "")
 	flag.StringVar(&opts.InstanceImage, "image", "", "")
 	flag.StringVar(&opts.InstanceType, "type", "", "")

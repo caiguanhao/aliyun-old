@@ -14,6 +14,8 @@ InstanceActions=(
   restart  restart-instance
   remove   remove-instance
   update   update-instance
+  hide     hide-instance
+  unhide   unhide-instance
 )
 InstanceActions=$(printf "|%s" "${InstanceActions[@]}")
 InstanceActions=${InstanceActions:1}
@@ -51,12 +53,23 @@ function __aliyun_main {
   fi
 
   local prev=${COMP_WORDS[COMP_CWORD-1]}
+
+  additionalFlags=
+  case "$prev" in
+  unhide|unhide-instance)
+    additionalFlags="--hidden-only"
+    ;;
+  list|list-instance|--name)
+    additionalFlags="--all"
+    ;;
+  esac
+
   case "$prev" in
   $InstanceActions)
-    COMPREPLY=($(aliyun --quiet --region "$region" --print-name-id list-instances))
+    COMPREPLY=($(aliyun --quiet --region "$region" $additionalFlags --print-name-id list-instances))
     ;;
   --name)
-    COMPREPLY=($(aliyun --quiet --region "$region" --print-name list-instances))
+    COMPREPLY=($(aliyun --quiet --region "$region" $additionalFlags --print-name list-instances))
     ;;
   --type)
     COMPREPLY=($(aliyun --quiet list-instance-types))

@@ -11,6 +11,8 @@ var (
 	IsVerbose      bool
 	PrintName      bool
 	PrintNameAndId bool
+	ShowOnlyHidden bool
+	ShowAll        bool
 
 	InstanceName  string
 	InstanceImage string

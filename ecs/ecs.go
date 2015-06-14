@@ -179,6 +179,10 @@ func (ecs *ECS) Do(task string, target *ECSInterface) bool {
 		*target, err = RemoveInstance{}.Do(ecs)
 	case "update", "update-instance":
 		*target, err = ModifyInstanceAttribute{}.Do(ecs)
+	case "hide", "hide-instance":
+		*target, err = ModifyInstanceAttribute{}.HideInstance(ecs, true)
+	case "unhide", "unhide-instance":
+		*target, err = ModifyInstanceAttribute{}.HideInstance(ecs, false)
 	default:
 		return false
 	}

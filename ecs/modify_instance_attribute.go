@@ -3,12 +3,35 @@ package ecs
 import (
 	"errors"
 	"fmt"
+	"strings"
 
 	"github.com/caiguanhao/aliyun/misc/opts"
 )
 
 type ModifyInstanceAttribute struct {
 	RequestId string `json:"RequestId"`
+}
+
+func (modify ModifyInstanceAttribute) HideInstance(ecs *ECS, hide bool) (*ModifyInstanceAttribute, error) {
+	id, err := opts.GetInstanceId()
+	if err != nil {
+		return nil, err
+	}
+	var instance DescribeInstanceAttribute
+	err = instance.DescribeInstanceAttributeById(ecs, id)
+	if err != nil {
+		return nil, err
+	}
+	description := strings.Replace(instance.Description, "[HIDE]", "", -1)
+	if hide {
+		description = "[HIDE] " + description
+	}
+	description = strings.TrimSpace(description)
+	return &modify, ecs.Request(map[string]string{
+		"Action":      "ModifyInstanceAttribute",
+		"InstanceId":  id,
+		"Description": description,
+	}, &modify)
 }
 
 func (modify ModifyInstanceAttribute) Do(ecs *ECS) (*ModifyInstanceAttribute, error) {

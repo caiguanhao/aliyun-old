@@ -34,6 +34,9 @@ func (instances DescribeInstances) Do(ecs *ECS) (*DescribeInstances, error) {
 
 func (instances DescribeInstances) Print() {
 	for _, instance := range instances.Instances.Instance {
+		if instance.ShouldHide() {
+			continue
+		}
 		if opts.PrintNameAndId {
 			fmt.Printf("%s:%s\n", instance.InstanceName, instance.InstanceId)
 		} else if opts.PrintName {
@@ -49,6 +52,9 @@ func (instances DescribeInstances) PrintTable() {
 	nameMaxLength := 4
 	statusMaxLength := 6
 	for _, instance := range instances.Instances.Instance {
+		if instance.ShouldHide() {
+			continue
+		}
 		idLength := len(instance.InstanceId)
 		nameLength := len(instance.InstanceName)
 		statusLength := len(instance.Status)
@@ -70,6 +76,9 @@ func (instances DescribeInstances) PrintTable() {
 	)
 	fmt.Printf(format, "ID", "Name", "Status", "Public IP", "Private IP", "Type", "Created At")
 	for _, instance := range instances.Instances.Instance {
+		if instance.ShouldHide() {
+			continue
+		}
 		createdAt, _ := time.Parse("2006-01-02T15:04Z", instance.CreationTime)
 		duration := time.Since(createdAt)
 		createdAtStr := fmt.Sprintf("%s (%.0f days ago)",
