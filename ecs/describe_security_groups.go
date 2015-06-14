@@ -21,17 +21,17 @@ type DescribeSecurityGroups struct {
 	TotalCount int64 `json:"TotalCount"`
 }
 
-func (groups DescribeSecurityGroups) Do(ecs *ECS) (*DescribeSecurityGroups, error) {
+func (groups *DescribeSecurityGroups) Do(ecs *ECS) (*DescribeSecurityGroups, error) {
 	if len(opts.Region) < 1 {
 		if opts.IsQuiet {
-			return &groups, nil
+			return groups, nil
 		}
 		return nil, errors.New("Please provide a --region.")
 	}
-	return &groups, ecs.Request(map[string]string{
+	return groups, ecs.Request(map[string]string{
 		"Action":   "DescribeSecurityGroups",
 		"RegionId": opts.Region,
-	}, &groups)
+	}, groups)
 }
 
 func (groups DescribeSecurityGroups) Print() {

@@ -80,12 +80,9 @@ func (instance *DescribeInstanceAttribute) DescribeInstanceAttributeById(ecs *EC
 	}, instance)
 }
 
-func (instance DescribeInstanceAttribute) Do(ecs *ECS) (*DescribeInstanceAttribute, error) {
+func (instance *DescribeInstanceAttribute) Do(ecs *ECS) (*DescribeInstanceAttribute, error) {
 	if id, err := opts.GetInstanceId(); err == nil {
-		return &instance, ecs.Request(map[string]string{
-			"Action":     "DescribeInstanceAttribute",
-			"InstanceId": id,
-		}, &instance)
+		return instance, instance.DescribeInstanceAttributeById(ecs, id)
 	} else {
 		return nil, err
 	}

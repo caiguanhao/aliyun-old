@@ -10,12 +10,12 @@ type StartInstance struct {
 	RequestId string `json:"RequestId"`
 }
 
-func (start StartInstance) Do(ecs *ECS) (*StartInstance, error) {
+func (start *StartInstance) Do(ecs *ECS) (*StartInstance, error) {
 	if id, err := opts.GetInstanceId(); err == nil {
-		return &start, ecs.Request(map[string]string{
+		return start, ecs.Request(map[string]string{
 			"Action":     "StartInstance",
 			"InstanceId": id,
-		}, &start)
+		}, start)
 	} else {
 		return nil, err
 	}

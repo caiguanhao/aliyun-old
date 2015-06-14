@@ -38,11 +38,11 @@ func validate() errors.Errors {
 	return errs
 }
 
-func (create CreateInstance) Do(ecs *ECS) (*CreateInstance, error) {
+func (create *CreateInstance) Do(ecs *ECS) (*CreateInstance, error) {
 	if errs := validate(); errs.HaveError() {
 		return nil, errs.Errorify()
 	}
-	return &create, ecs.Request(map[string]string{
+	return create, ecs.Request(map[string]string{
 		"Action":                        "CreateInstance",
 		"ImageId":                       opts.InstanceImage,
 		"InstanceType":                  opts.InstanceType,
@@ -59,7 +59,7 @@ func (create CreateInstance) Do(ecs *ECS) (*CreateInstance, error) {
 		"DataDisk.1.Category":           "cloud",
 		"DataDisk.1.Device":             "/dev/xvdb",
 		"DataDisk.1.DeleteWithInstance": "true",
-	}, &create)
+	}, create)
 }
 
 func (create CreateInstance) Print() {

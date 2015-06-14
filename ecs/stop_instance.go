@@ -10,12 +10,12 @@ type StopInstance struct {
 	RequestId string `json:"RequestId"`
 }
 
-func (stop StopInstance) Do(ecs *ECS) (*StopInstance, error) {
+func (stop *StopInstance) Do(ecs *ECS) (*StopInstance, error) {
 	if id, err := opts.GetInstanceId(); err == nil {
-		return &stop, ecs.Request(map[string]string{
+		return stop, ecs.Request(map[string]string{
 			"Action":     "StopInstance",
 			"InstanceId": id,
-		}, &stop)
+		}, stop)
 	} else {
 		return nil, err
 	}

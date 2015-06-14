@@ -33,10 +33,10 @@ func (a byCPUCoreThenMemorySize) Less(i, j int) bool {
 	return false
 }
 
-func (types DescribeInstanceTypes) Do(ecs *ECS) (*DescribeInstanceTypes, error) {
-	return &types, ecs.Request(map[string]string{
+func (types *DescribeInstanceTypes) Do(ecs *ECS) (*DescribeInstanceTypes, error) {
+	return types, ecs.Request(map[string]string{
 		"Action": "DescribeInstanceTypes",
-	}, &types)
+	}, types)
 }
 
 func (types DescribeInstanceTypes) Print() {

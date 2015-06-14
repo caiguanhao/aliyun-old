@@ -34,7 +34,7 @@ func (modify ModifyInstanceAttribute) HideInstance(ecs *ECS, hide bool) (*Modify
 	}, &modify)
 }
 
-func (modify ModifyInstanceAttribute) Do(ecs *ECS) (*ModifyInstanceAttribute, error) {
+func (modify *ModifyInstanceAttribute) Do(ecs *ECS) (*ModifyInstanceAttribute, error) {
 	id, err := opts.GetInstanceId()
 	if err != nil {
 		return nil, err
@@ -50,7 +50,7 @@ func (modify ModifyInstanceAttribute) Do(ecs *ECS) (*ModifyInstanceAttribute, er
 		params["InstanceName"] = opts.InstanceName
 	}
 	if len(params) > 2 {
-		return &modify, ecs.Request(params, &modify)
+		return modify, ecs.Request(params, modify)
 	}
 	return nil, errors.New("Please provide at least one: --name, --description.")
 }

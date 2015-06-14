@@ -153,36 +153,36 @@ func (ecs *ECS) Do(task string, target *ECSInterface) bool {
 	switch task {
 	case "list", "list-instances":
 		if flag.Arg(1) != "" {
-			*target, err = DescribeInstanceAttribute{}.Do(ecs)
+			*target, err = (&DescribeInstanceAttribute{}).Do(ecs)
 		} else {
-			*target, err = DescribeInstances{}.Do(ecs)
+			*target, err = (&DescribeInstances{}).Do(ecs)
 		}
 	case "images", "list-images":
-		*target, err = DescribeImages{}.Do(ecs)
+		*target, err = (&DescribeImages{}).Do(ecs)
 	case "regions", "list-regions":
-		*target, err = DescribeRegions{}.Do(ecs)
+		*target, err = (&DescribeRegions{}).Do(ecs)
 	case "types", "list-instance-types":
-		*target, err = DescribeInstanceTypes{}.Do(ecs)
+		*target, err = (&DescribeInstanceTypes{}).Do(ecs)
 	case "groups", "list-security-groups":
-		*target, err = DescribeSecurityGroups{}.Do(ecs)
+		*target, err = (&DescribeSecurityGroups{}).Do(ecs)
 	case "create", "create-instance":
-		*target, err = CreateInstance{}.Do(ecs)
+		*target, err = (&CreateInstance{}).Do(ecs)
 	case "allocate", "allocate-public-ip":
-		*target, err = AllocatePublicIP{}.Do(ecs)
+		*target, err = (&AllocatePublicIP{}).Do(ecs)
 	case "start", "start-instance":
-		*target, err = StartInstance{}.Do(ecs)
+		*target, err = (&StartInstance{}).Do(ecs)
 	case "stop", "stop-instance":
-		*target, err = StopInstance{}.Do(ecs)
+		*target, err = (&StopInstance{}).Do(ecs)
 	case "restart", "restart-instance":
-		*target, err = RestartInstance{}.Do(ecs)
+		*target, err = (&RestartInstance{}).Do(ecs)
 	case "remove", "remove-instance":
-		*target, err = RemoveInstance{}.Do(ecs)
+		*target, err = (&RemoveInstance{}).Do(ecs)
 	case "update", "update-instance":
-		*target, err = ModifyInstanceAttribute{}.Do(ecs)
+		*target, err = (&ModifyInstanceAttribute{}).Do(ecs)
 	case "hide", "hide-instance":
-		*target, err = ModifyInstanceAttribute{}.HideInstance(ecs, true)
+		*target, err = (&ModifyInstanceAttribute{}).HideInstance(ecs, true)
 	case "unhide", "unhide-instance":
-		*target, err = ModifyInstanceAttribute{}.HideInstance(ecs, false)
+		*target, err = (&ModifyInstanceAttribute{}).HideInstance(ecs, false)
 	default:
 		return false
 	}

@@ -46,17 +46,17 @@ func (a byImagesId) Len() int           { return len(a) }
 func (a byImagesId) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a byImagesId) Less(i, j int) bool { return a[i].ImageId < a[j].ImageId }
 
-func (images DescribeImages) Do(ecs *ECS) (*DescribeImages, error) {
+func (images *DescribeImages) Do(ecs *ECS) (*DescribeImages, error) {
 	if len(opts.Region) < 1 {
 		if opts.IsQuiet {
-			return &images, nil
+			return images, nil
 		}
 		return nil, errors.New("Please provide a --region.")
 	}
-	return &images, ecs.Request(map[string]string{
+	return images, ecs.Request(map[string]string{
 		"Action":   "DescribeImages",
 		"RegionId": opts.Region,
-	}, &images)
+	}, images)
 }
 
 func (images DescribeImages) Print() {

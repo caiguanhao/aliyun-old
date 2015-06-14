@@ -22,10 +22,10 @@ func (a byRegionID) Len() int           { return len(a) }
 func (a byRegionID) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a byRegionID) Less(i, j int) bool { return a[i].RegionID < a[j].RegionID }
 
-func (regions DescribeRegions) Do(ecs *ECS) (*DescribeRegions, error) {
-	return &regions, ecs.Request(map[string]string{
+func (regions *DescribeRegions) Do(ecs *ECS) (*DescribeRegions, error) {
+	return regions, ecs.Request(map[string]string{
 		"Action": "DescribeRegions",
-	}, &regions)
+	}, regions)
 }
 
 func (regions DescribeRegions) Print() {

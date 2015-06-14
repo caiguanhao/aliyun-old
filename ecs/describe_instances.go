@@ -19,17 +19,17 @@ type DescribeInstances struct {
 	TotalCount int64  `json:"TotalCount"`
 }
 
-func (instances DescribeInstances) Do(ecs *ECS) (*DescribeInstances, error) {
+func (instances *DescribeInstances) Do(ecs *ECS) (*DescribeInstances, error) {
 	if len(opts.Region) < 1 {
 		if opts.IsQuiet {
-			return &instances, nil
+			return instances, nil
 		}
 		return nil, errors.New("Please provide a --region.")
 	}
-	return &instances, ecs.Request(map[string]string{
+	return instances, ecs.Request(map[string]string{
 		"Action":   "DescribeInstances",
 		"RegionId": opts.Region,
-	}, &instances)
+	}, instances)
 }
 
 func (instances DescribeInstances) Print() {

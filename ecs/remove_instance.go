@@ -10,12 +10,12 @@ type RemoveInstance struct {
 	RequestId string `json:"RequestId"`
 }
 
-func (remove RemoveInstance) Do(ecs *ECS) (*RemoveInstance, error) {
+func (remove *RemoveInstance) Do(ecs *ECS) (*RemoveInstance, error) {
 	if id, err := opts.GetInstanceId(); err == nil {
-		return &remove, ecs.Request(map[string]string{
+		return remove, ecs.Request(map[string]string{
 			"Action":     "DeleteInstance",
 			"InstanceId": id,
-		}, &remove)
+		}, remove)
 	} else {
 		return nil, err
 	}

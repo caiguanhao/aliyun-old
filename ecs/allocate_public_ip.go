@@ -11,12 +11,12 @@ type AllocatePublicIP struct {
 	IpAddress string `json:"IpAddress"`
 }
 
-func (alloc AllocatePublicIP) Do(ecs *ECS) (*AllocatePublicIP, error) {
+func (alloc *AllocatePublicIP) Do(ecs *ECS) (*AllocatePublicIP, error) {
 	if id, err := opts.GetInstanceId(); err == nil {
-		return &alloc, ecs.Request(map[string]string{
+		return alloc, ecs.Request(map[string]string{
 			"Action":     "AllocatePublicIpAddress",
 			"InstanceId": id,
-		}, &alloc)
+		}, alloc)
 	} else {
 		return nil, err
 	}
